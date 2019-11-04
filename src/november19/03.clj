@@ -8,81 +8,67 @@
 ;
 ; - push(item), which adds a new key to the heap
 ; - pop(), which removes and returns the max value of the heap
-
 (ns november19.03)
 
 ;; Heap implementation
+(defn swap [heap one two]
+  (assoc heap one (nth heap two) two (nth heap one)))
 
-(defrecord HeapEntry [value key]
+(defn parent [pos] (int (/ (dec pos) 2)))
+
+(defn left-child [pos] (inc (* 2 pos)))
+
+(defn right-child [pos] (+ (* 2 pos) 2))
+
+(defn bigger? [heap x y]
+  (> (.compareTo (nth heap x) (nth heap y)) 0))
+
+(defn heapify-down [heap pos]
+  (let [left (left-child pos)
+        right (right-child pos)
+        size (count heap)]
+    (if (and (< left right size) (or (bigger? heap left pos) (bigger? heap right pos)))
+      (if (bigger? heap left right)
+        (recur (swap heap pos left) left)
+        (recur (swap heap pos right) right))
+      heap)))
+
+(defn heapify-up [heap pos]
+  (let [parent (parent pos)]
+    (if (and (> pos 0) (bigger? heap pos parent))
+      (recur (swap heap pos parent) parent)
+      heap)))
+
+(defn heap-push [heap key]
+  (heapify-up (conj heap key) (count heap)))
+
+(defn heap-pop [heap]
+  (heapify-down (pop (assoc heap 0 (last heap))) 0))
+
+(defn heap-peek [heap]
+  (nth heap 0))
+
+;; Stack implementation (solely based on heap)
+(defrecord StackEntry [value key]
   Comparable
   (compareTo [_ other] (.compareTo key (:key other))))
 
-(defn swap [coll one two]
-  (assoc coll one (nth coll two) two (nth coll one)))
-
-(defn parent [pos] (int (/ pos 2)))
-
-(defn left-child [pos] (* 2 pos))
-
-(defn right-child [pos] (+ 1 (* 2 pos)))
-
-(defn leaf? [heap pos] (let [size (count heap)]
-                         (and (>= pos (/ size 2)) (<= pos size))))
-
-(defn empty-heap [] [(->HeapEntry nil Long/MAX_VALUE)])
-
-(defn heapify [heap pos]
-  (if (leaf? heap pos)
-    heap
-    (let [left (left-child pos)
-          right (right-child pos)
-          size (count heap)]
-      (if (< left right size)
-        (let [curr (nth heap pos)
-              left-node (nth heap left)
-              right-node (nth heap right)]
-          (if (or (< (.compareTo curr left-node) 0) (< (.compareTo curr right-node) 0))
-            (if (> (.compareTo left-node right-node) 0)
-              (recur (swap heap pos left) left)
-              (recur (swap heap pos right) right))
-            heap))
-        heap))))
-
-(defn heap-insert [heap value]
-  (loop [pos (count heap) heap (conj heap value)]
-    (let [parent (parent pos)]
-      (if (> (.compareTo (nth heap pos) (nth heap parent)) 0)
-        (recur parent (swap heap pos parent))
-        heap))))
-
-(defn heap-peek [heap] (nth heap 1))
-
-(defn heap-pop [heap]
-  (heapify (into (conj (empty-heap) (last heap)) (drop 2 (pop heap))) 1))
-
-;; Stack implementation (solely based on heap)
-(defrecord Stack [heap])
-
-(defn is-empty [stack] (<= (count (:heap stack)) 1))
-
-(defn empty-stack [] (->Stack (empty-heap)))
-
 (defn stack-push [stack value]
-  (->Stack
-    (heap-insert
-      (:heap stack)
-      (->HeapEntry value (if (is-empty stack) 0 (inc (:key (heap-peek (:heap stack)))))))))
+  (heap-push stack (->StackEntry value (if (empty? stack) 0 (inc (:key (heap-peek stack)))))))
 
 (defn stack-peek [stack]
-  (:value (heap-peek (:heap stack))))
+  (:value (heap-peek stack)))
 
 (defn stack-pop [stack]
-  (->Stack (heap-pop (:heap stack))))
+  (heap-pop stack))
 
-;; FIXME Tests prints 100 infinitely
-(loop [s (-> (empty-stack) (stack-push 100) (stack-push 40) (stack-push 120))]
-  (println (stack-peek s))
-  (if (is-empty s) nil (recur (stack-pop s))))
+;; Tests
+(loop [stack (-> [] (stack-push 100) (stack-push 40) (stack-push 120))]
+  (println (stack-peek stack))
+  (if (= (count stack) 1) nil (recur (stack-pop stack))))
+
+
+
 
 
 

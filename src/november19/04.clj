@@ -4,7 +4,6 @@
 ; You can assume that such element exists.
 ;
 ; For example, given [1, 2, 1, 1, 3, 4, 0], return 1.
-
 (ns november19.04)
 
 (defn occurrences [element coll]
