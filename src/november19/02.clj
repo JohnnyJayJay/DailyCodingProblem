@@ -4,6 +4,7 @@
 ; For example, given words "hello", and "world" and a text content of
 ; "dog cat hello cat dog dog hello cat world", return 1 because
 ; there's only one word "cat" in between the two words.
+(ns november19.02)
 
 ; generic function to calculate smallest distance between two elements in a collection (or nil if not present in this order)
 (defn distance [coll element1 element2]

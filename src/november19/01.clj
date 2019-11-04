@@ -6,6 +6,8 @@
 ;
 ; You can generate random numbers between 0 and 1 uniformly.
 
+(ns november19.01)
+
 (defn choose [numbers probabilities]
   (let [r (rand)]
     (loop [index 0 total 1]
