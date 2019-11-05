@@ -66,9 +66,3 @@
 (loop [stack (-> [] (stack-push 100) (stack-push 40) (stack-push 120))]
   (println (stack-peek stack))
   (if (= (count stack) 1) nil (recur (stack-pop stack))))
-
-
-
-
-
-
