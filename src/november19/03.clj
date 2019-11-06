@@ -21,7 +21,7 @@
 (defn right-child [pos] (+ (* 2 pos) 2))
 
 (defn bigger? [heap x y]
-  (> (.compareTo (nth heap x) (nth heap y)) 0))
+  (> (compare (nth heap x) (nth heap y)) 0))
 
 (defn heapify-down [heap pos]
   (let [left (left-child pos)
@@ -51,7 +51,7 @@
 ;; Stack implementation (solely based on heap)
 (defrecord StackElement [value key] ; value: The "real" value of the stack element, key: the key to be used in the heap
   Comparable
-  (compareTo [_ other] (.compareTo key (:key other))))
+  (compareTo [_ other] (compare key (:key other))))
 
 ; heap insert value wrapped in StackElement - key is either one greater than the heap's max value or 0 if it's empty
 (defn stack-push [stack value]

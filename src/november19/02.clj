@@ -26,7 +26,8 @@
     (if d d (distance words word2 word1))))
 
 ; Tests
-(println (word-distance "dog cat hello cat dog dog hello cat world" "hello" "world")) ; 1
-(println (word-distance "dog cat hello cat dog dog cat world" "hello" "world")) ; 4
-(println (word-distance "dog cat world cat dog dog cat hello" "hello" "world")) ; 4
-(println (word-distance "dog cat hello cat dog dog cat" "hello" "world")) ; nil
+(doseq [phrase ["dog cat hello cat dog dog hello cat world"
+                "dog cat hello cat dog dog cat world"
+                "dog cat world cat dog dog cat hello"
+                "dog cat hello cat dog dog cat"]]
+  (println (word-distance phrase "hello" "world")))
