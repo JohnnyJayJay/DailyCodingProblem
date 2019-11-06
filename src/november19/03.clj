@@ -49,12 +49,13 @@
   (nth heap 0))
 
 ;; Stack implementation (solely based on heap)
-(defrecord StackEntry [value key]
+(defrecord StackElement [value key] ; value: The "real" value of the stack element, key: the key to be used in the heap
   Comparable
   (compareTo [_ other] (.compareTo key (:key other))))
 
+; heap insert value wrapped in StackElement - key is either one greater than the heap's max value or 0 if it's empty
 (defn stack-push [stack value]
-  (heap-push stack (->StackEntry value (if (empty? stack) 0 (inc (:key (heap-peek stack)))))))
+  (heap-push stack (->StackElement value (if (empty? stack) 0 (inc (:key (heap-peek stack)))))))
 
 (defn stack-peek [stack]
   (:value (heap-peek stack)))

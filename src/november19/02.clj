@@ -14,11 +14,11 @@
         (if (< shortest size) (dec shortest) nil)
         (let [element (nth coll index)]
           (condp = element
-            element1 (recur (inc index) shortest 1)
-            element2 (if (and (> counting 0) (< counting shortest))
-                       (recur (inc index) counting 0)
-                       (recur (inc index) shortest 0))
-            (recur (inc index) shortest (if (> counting 0) (inc counting) 0))))))))
+            element1 (recur (inc index) shortest 1) ; if first element is found, begin counting
+            element2 (if (and (> counting 0) (< counting shortest)) ; if second element is found,...
+                       (recur (inc index) counting 0) ; ...the first value already occurred and this distance is smaller than the shortest one so far: reset counter and recur with this distance as the new shortest
+                       (recur (inc index) shortest 0)) ; ...but neither of the other conditions apply, reset counter and stick with the shortest so far
+            (recur (inc index) shortest (if (> counting 0) (inc counting) 0)))))))) ; Ignore other elements, but increase distance counter if already counting
 
 ; splits string into words and calls distance (also distance with the words swapped if no result)
 (defn word-distance [str word1 word2]

@@ -10,7 +10,7 @@
 
 (defn choose [numbers probabilities]
   (let [r (rand)]
-    (loop [index 0 total 1]
+    (loop [index 0 total 1] ; Loop through the probabilities and see if the random number is in bounds of 1 - probabilities so far
       (let [bound (- total (nth probabilities index))]
         (if (> r bound) (nth numbers index) (recur (inc index) bound))))))
 
