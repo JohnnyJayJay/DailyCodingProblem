@@ -4,11 +4,11 @@
 (ns november19.08)
 
 (defn first-recurring [coll]
-  (loop [coll coll chars []]
-    (let [char (first coll)]
-      (if (nil? (some #(= char %) chars))
-        (recur (rest coll) (conj chars char))
-        char))))
+  (loop [coll coll elements (hash-set)]
+    (let [element (first coll)]
+      (if (or (elements element) (nil? element))
+        element
+        (recur (rest coll) (conj elements element))))))
 
 (println (first-recurring "acbbac"))
 (println (first-recurring "abcdef"))
