@@ -18,15 +18,8 @@
 (def numbers '(1 2 3 4))
 (def probabilities '(0.1 0.5 0.2 0.2))
 
-; helper function to count the occurrences of a single element in a collection
-(defn occurrences [element coll]
-  (count (filter #(= element %) coll)))
-
 ; Call choose with the inputs n times and print the results (number : count - ratio)
 (let [n 10000
-      result (take n (repeatedly #(choose numbers probabilities)))
-      parts (map #(occurrences % result) numbers)]
+      result (take n (repeatedly #(choose numbers probabilities)))]
   (println "Total:" n)
-  (dotimes [i (count numbers)]
-    (let [part (nth parts i)]
-      (println (nth numbers i) ":" part "-" (double (/ part n))))))
+  (println (frequencies result)))

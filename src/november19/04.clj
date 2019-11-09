@@ -6,11 +6,7 @@
 ; For example, given [1, 2, 1, 1, 3, 4, 0], return 1.
 (ns november19.04)
 
-; Return the amount of occurrences of an element in one collection
-(defn occurrences [element coll]
-  (count (filter #(= element %) coll)))
-
 (defn majority-element [coll]
-  (key (apply max-key val (into (hash-map) (map #(vector % (occurrences % coll)) coll))))) ; map coll's values to their occurrences in col and find the max value
+  (key (apply max-key val (frequencies coll)))) ; map coll's values to their occurrences in col and find the max value
 
 (println (majority-element [1 2 1 1 3 4 0]))
