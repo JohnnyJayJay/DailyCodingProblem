@@ -3,6 +3,6 @@
 (ns november19.13)
 
 (defn find-duplicate [coll]
-  (- (apply + coll) (apply + (range 1 (count coll))))) ; sum of all numbers in coll - sum of all integers from 1 to n = duplicate
+  (- (apply + coll) (apply + (range (count coll))))) ; sum of all numbers in coll - sum of all integers from 1 to n = duplicate
 
 (println (find-duplicate [1 2 3 4 7 5 6 7 8 9]))
