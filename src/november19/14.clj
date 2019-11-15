@@ -12,7 +12,11 @@
 
 ; I really don't know what to call this function
 (defn task [input]
-  (for [index (range (count input))]
-    (count (filter (partial > (nth input index)) (drop (inc index) input)))))
+  (loop [remaining input result []]
+    (if (empty? remaining)
+      result
+      (recur
+        (rest remaining)
+        (conj result (count (filter (partial > (first remaining)) remaining)))))))
 
 (println (task [3 4 9 6 1]))
