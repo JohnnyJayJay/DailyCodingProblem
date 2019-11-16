@@ -40,6 +40,7 @@
             (max weight (longest-path-down child weight)))))
       total-weight)))
 
+; The time complexity for this is stupidly large, but it handles all possible cases (including negative weight)
 (defn longest-path
   ([node previous total-weight]
    (let [parent (:parent node)]
