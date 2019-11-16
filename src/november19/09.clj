@@ -16,11 +16,7 @@
 ; The path does not have to pass through the root, and each node can have any amount of children.
 (ns november19.09)
 
-; TODO improve this
-
-; returns the given node without the given child (useful to "block" certain ways down a tree)
-(defn without-child [node child]
-  (assoc node :children (remove #(identical? child %) (node :children))))
+; TODO optimise this
 
 ; Starting from any node, work all possible ways down, not limited to leaf nodes as the last nodes
 (defn longest-path-down [root total-weight]
