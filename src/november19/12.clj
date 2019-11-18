@@ -12,16 +12,17 @@
 (defn rpn [expression]                                      ; expression is a vector of numbers and operators
   (if (= 1 (count expression))                              ; if there's only one element, return that ([x] => x)
     (first expression)
-    (recur (loop [remaining (range (count expression))]     ; else recur with a modified expression, where the first occurrence of [number number operator] is evaluated
-             (let [index (first remaining)
-                   eval-begin (- index 2)
-                   eval-end (inc index)
-                   element (expression index)]
-               (if (ifn? element)
-                 (into                                      ; replace [number number operator] with the evaluated value
-                   (conj (subvec expression 0 eval-begin) (eval (rseq (subvec expression eval-begin eval-end))))
-                   (subvec expression eval-end))
-                 (recur (rest remaining))))))))             ; if not an operator, continue iterating
+    (recur
+      (loop [remaining (range (count expression))]          ; else recur with a modified expression, where the first occurrence of [number number operator] is evaluated
+        (let [index (first remaining)
+              eval-begin (- index 2)
+              eval-end (inc index)
+              element (expression index)]
+          (if (ifn? element)
+            (into                                           ; replace [number number operator] with the evaluated value
+              (conj (subvec expression 0 eval-begin) (eval (rseq (subvec expression eval-begin eval-end))))
+              (subvec expression eval-end))
+            (recur (rest remaining))))))))                  ; if not an operator, continue iterating
 
 (println (rpn [5 3 +]))
 (println (rpn [15 7 1 1 + - / 3 * 2 1 1 + + -]))
