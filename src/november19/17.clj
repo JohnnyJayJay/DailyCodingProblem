@@ -15,7 +15,7 @@
 
 (defn rotate [matrix, n]
   (let [indices (range n)                                   ; 0..n
-        reversed (reverse indices)]             ; n..0
+        reversed (reverse indices)]                         ; n..0
     (apply vector (for [column indices]                     ; iterate over columns
                     (apply vector (for [row reversed] ((matrix row) column))))))) ; iterate over reversed rows
 
