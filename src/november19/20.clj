@@ -15,7 +15,7 @@
 (ns november19.20)
 
 (defn busiest-period [entries]
-  ((apply max-key #(% :people)                              ; find the value where :people is greatest
+  ((apply max-key :people                              ; find the value where :people is greatest
           (reductions
             #(hash-map                                      ; reduce entries by capturing the time frame of the last two entries before each one
                :frame [(%1 :timestamp) (%2 :timestamp)]
