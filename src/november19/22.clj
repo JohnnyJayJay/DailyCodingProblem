@@ -28,7 +28,7 @@
     hash-map                                                ; construct new hash map from key-value pairs
     (flatten
       (map #(if (map? (% 1)) (vec (flatten-dict (% 1) (% 0))) %) ; if nested map: flatten with key as new context
-           (map #(assoc % 0 (if context (str context "." (% 0)) (% 0))) ; change key to context.key if context is present
+           (map #(if context (assoc % 0 (str context "." (% 0))) %) ; change key to context.key if context is present
                 (seq dict))))))                             ; key-value pairs
 
 (println (flatten-dict {"key" 3
