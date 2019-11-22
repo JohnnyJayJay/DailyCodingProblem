@@ -14,11 +14,11 @@
 ; that all represent a different order of the initial collection.
 ; E.g.: (possible-orders [1 2 3]) => ((1 2 3) (1 3 2) (2 1 3) (2 3 1) (3 1 2) (3 2 1))
 (defn possible-orders
-  ([start remaining]                                      ; Helper function overload for recursion
+  ([start remaining]                                        ; Helper function overload for recursion
    (if (seq remaining)
      (for [element remaining]
        (let [orders (possible-orders element (filter (partial not= element) remaining))] ; all possible orders for the remaining elements without the current element
-         (if (some? start)
+         (if start
            (cons start orders)
            orders)))                                        ; If no start value given, just return the orders
      [start]))                                              ; If no remaining values, return the start value (as a vector, to work with cons)
