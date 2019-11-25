@@ -13,6 +13,7 @@
 ; returns all possible orders for a given collection, i.e. a sequence of n! sequences
 ; that all represent a different order of the initial collection.
 ; E.g.: (possible-orders [1 2 3]) => ((1 2 3) (1 3 2) (2 1 3) (2 3 1) (3 1 2) (3 2 1))
+; TODO make it work for duplicate elements
 (defn possible-orders
   ([start remaining]                                        ; Helper function overload for recursion
    (if (seq remaining)
