@@ -24,6 +24,10 @@
      ; else recur for each possible transformation in the dictionary as the current word
      :else (for [possible (filter (partial transformable? current) dictionary)]
              (transformations possible end (disj dictionary possible) (conj current-transform possible)))))
-  ([start end dictionary] (apply min-key count (transformations start end dictionary [start])))) ; TODO flatten result
+  ([start end dictionary]
+   (conj (vec (apply min-key count
+                     (filter #(not= (first %) end)
+                             (partition-by (partial = end)
+                                           (flatten (transformations start end dictionary [start])))))) end)))
 
-(println (transformations "dog" "cat" #{"dot" "dop" "dat" "cat"} []))
+(println (transformations "dog" "cat" #{"dot" "dop" "dat" "cat"}))
