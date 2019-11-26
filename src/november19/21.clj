@@ -13,21 +13,21 @@
 ; returns all possible orders for a given collection, i.e. a sequence of n! sequences
 ; that all represent a different order of the initial collection.
 ; E.g.: (possible-orders [1 2 3]) => ((1 2 3) (1 3 2) (2 1 3) (2 3 1) (3 1 2) (3 2 1))
-; TODO make it work for duplicate elements
-(defn possible-orders
+(defn permutations
   ([start remaining]                                        ; Helper function overload for recursion
    (if (seq remaining)
      (for [element remaining]
-       (let [orders (possible-orders element (filter (partial not= element) remaining))] ; all possible orders for the remaining elements without the current element
+       (let [new-remaining (split-with (partial not= element) remaining)
+             orders (permutations element (into (first new-remaining) (rest (last new-remaining))))] ; all possible orders for the remaining elements without the current element
          (if start
            (cons start orders)
            orders)))                                        ; If no start value given, just return the orders
      [start]))                                              ; If no remaining values, return the start value (as a vector, to work with cons)
-  ([coll] (partition (count coll) (flatten (possible-orders nil (vec coll)))))) ; begin recursive possible-orders for a collection and reformat the result to be a sequence of sequences (no more nesting)
+  ([coll] (partition (count coll) (flatten (permutations nil (vec coll)))))) ; begin recursive possible-orders for a collection and reformat the result to be a sequence of sequences (no more nesting)
 
 ; returns the indices in string of substrings that are a combination of the given parts
 (defn substr-indices [string parts]
-  (filter (partial <= 0) (map #(.indexOf string %) (map (partial apply str) (possible-orders parts))))) ; get all possible-orders, concatenate each, find substring index and filter out the non-existent ones
+  (filter (partial <= 0) (map #(.indexOf string %) (map (partial apply str) (permutations parts))))) ; get all possible-orders, concatenate each, find substring index and filter out the non-existent ones
 
 (println (substr-indices "dogcatcatcodecatdog" ["cat" "dog"]))
 (println (substr-indices "barfoobazbitbyte" ["dog" "cat"]))
