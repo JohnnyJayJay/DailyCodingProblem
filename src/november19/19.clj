@@ -14,7 +14,6 @@
 (defn transformable? [one two]
   (< (count (filter identity (map not= one two))) 2))
 
-
 (defn transformations
   ([current end dictionary current-transform]
    (cond

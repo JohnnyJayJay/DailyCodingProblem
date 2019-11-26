@@ -6,7 +6,7 @@
 (ns november19.25)
 
 (defn mapping-possible? [one two]
-  (= (count (distinct one)) (count (distinct two)) (count (zipmap one two))))
+  (= two (apply str (map (zipmap one two) one))))
 
 (println (mapping-possible? "abc" "bcd"))
 (println (mapping-possible? "foo" "bar"))
