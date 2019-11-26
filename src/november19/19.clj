@@ -18,16 +18,13 @@
   ([current end dictionary current-transform]
    (cond
      ; if the current word can be transformed into the end word, return the transform path so far (current-transform) + the end word
-     (transformable? current end) (conj current-transform end)
+     (transformable? current end) (into current-transform [end nil]) ; Use nil as a sentinel value for partitioning
      ; if no more transformations are possible, return an empty vector
      (empty? dictionary) []
      ; else recur for each possible transformation in the dictionary as the current word
      :else (for [possible (filter (partial transformable? current) dictionary)]
              (transformations possible end (disj dictionary possible) (conj current-transform possible)))))
   ([start end dictionary]
-   (conj (vec (apply min-key count
-                     (filter #(not= (first %) end)
-                             (partition-by (partial = end)
-                                           (flatten (transformations start end dictionary [start])))))) end)))
+   (filter #(some? (first %)) (partition-by nil? (flatten (transformations start end dictionary [start]))))))
 
-(println (transformations "dog" "cat" #{"dot" "dop" "dat" "cat"}))
+(println (apply min-key count (transformations "dog" "cat" #{"dot" "dop" "dat" "cat"})))
