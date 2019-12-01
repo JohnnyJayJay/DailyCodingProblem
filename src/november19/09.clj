@@ -52,7 +52,7 @@
                                       {:weight   1
                                        :children []}]}
                           {:weight   4
-                           :children []}]}]
-   })
+                           :children []}]}]})
+
 
 (println (longest-path tree))

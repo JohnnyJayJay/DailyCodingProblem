@@ -17,11 +17,11 @@
     (cond
       (empty? remaining) counter
       (= (first remaining) (roll-dice)) (recur (rest remaining) (inc counter))
-      :else (recur remaining (inc counter)))))
+      :else (recur streak (inc counter)))))
 
 ; Simulation: play the game 10000 times for both cases and calculate the average
 (println (/ (apply + (repeatedly 10000 #(roll-dice-until [5 6]))) 10000.0))
 (println (/ (apply + (repeatedly 10000 #(roll-dice-until [5 5]))) 10000.0))
 
 ; Answer: no, it doesn't matter since both streaks have a probability of 1/6 * 1/6 to occur.
-; The average amount of rolls will always be around 12.
+; The average amount of rolls will always be around 42.
